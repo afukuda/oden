@@ -43,9 +43,14 @@ generate_image = (fileName, minLayer, maxLayer) ->
   activeDocument.resizeCanvas t1_w, t1_h, AnchorPosition.TOPLEFT
 
 save = (fileName) ->
+  outputFolderPath = activeDocument.path + "/" + activeDocument.name[..-5]
+  filepath = outputFolderPath + "/" + fileName + ".png"
+
+  outputFolder = new Folder(outputFolderPath)
+  outputFolder.create() unless outputFolder.exists
+
   pngOptions = new PNGSaveOptions()
-  filepath = activeDocument.path + "/" + fileName + ".png"
-  app.activeDocument.saveAs(File( filepath ), pngOptions, true, Extension.LOWERCASE)
+  app.activeDocument.saveAs(File( filepath ), pngOptions, true)
 
 hiddenLayer = (root) ->
   original = {}
@@ -63,10 +68,7 @@ hiddenSystemLayer = (root) ->
   original
 
 restoreLayer = (root, original) ->
-  alert('restoreLayer')
   for layer in root.layers
-    alert(layer.name)
-    alert(original[layer.name])
     layer.visible = original[layer.name]
 
 restoreSystemLayer = (root, original) ->
