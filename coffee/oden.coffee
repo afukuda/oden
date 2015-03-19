@@ -1,1 +1,4 @@
-print 'hello coffee'
+main = ->
+  alert 'hello'
+
+main()
