@@ -26,7 +26,7 @@ run = (layerSet) ->
   original_active = hiddenSystemLayer layerSet
 
   fileName = layerSet.name[1..]
-  maxLayer = layerSet.artLayers.getByName "#Max"
+  maxLayer = layerSet
   minLayer = layerSet.artLayers.getByName "#Min"
   clipping_image(fileName, minLayer.bounds, maxLayer.bounds)
 
