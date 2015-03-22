@@ -62,17 +62,19 @@ generate_slice = (filePath, fileName, min, max) ->
   w = max[2] - max[0]
   h = max[3] - max[1]
 
-  dx = x1 - x2
-  dy = y1 - y2
+  center_px = 2
+  # 4pxはCenter分
+  dx = x1 - x2 + (center_px * 2)
+  dy = y1 - y2 + (center_px * 2)
   originalLayer = a.activeLayer
 
-  createLayerParts(a, originalLayer, 0, 0, x1+2, y1+2, 0, 0) # LeftTop
-  createLayerParts(a, originalLayer, 0, y2, x1, h, 0, dy-2) # LeftBottom
-  createLayerParts(a, originalLayer, x2, y2, w, h, dx-2, dy-2) # RightBottom
-  createLayerParts(a, originalLayer, x2, 0, w, y1, dx-2, 0) # RightTop
+  createLayerParts(a, originalLayer, 0, 0, x1+center_px, y1+center_px, 0, 0) # LeftTop
+  createLayerParts(a, originalLayer, 0, y2-center_px, x1+center_px, h, 0, dy) # LeftBottom
+  createLayerParts(a, originalLayer, x2-center_px, y2-center_px, w, h, dx, dy) # RightBottom
+  createLayerParts(a, originalLayer, x2-center_px, 0, w, y1+center_px, dx, 0) # RightTop
   originalLayer.clear()
 
-  a.resizeCanvas ((x1 - 0) + (w - x2)+2), ((y1 - 0) + (h - y2)+2), AnchorPosition.TOPLEFT
+  a.resizeCanvas (w + dx), (h + dy), AnchorPosition.TOPLEFT
 
   pngOptions = new PNGSaveOptions()
   a.saveAs(File(filePath), pngOptions, true)
