@@ -46,13 +46,13 @@ clipping_image = (fileName, minLayerBounds, maxLayerBounds) ->
   t2_h = activeDocument.height
   activeDocument.resizeCanvas w, h, AnchorPosition.BOTTOMRIGHT
 
-  filePath = save(fileName)
-  generate_slice(filePath, minLayerBounds, maxLayerBounds)
+  filePath = save_image(fileName, app.activeDocument)
+  generate_slice(filePath, fileName, minLayerBounds, maxLayerBounds)
 
   activeDocument.resizeCanvas t2_w, t2_h, AnchorPosition.BOTTOMRIGHT
   activeDocument.resizeCanvas t1_w, t1_h, AnchorPosition.TOPLEFT
 
-generate_slice = (filePath, min, max) ->
+generate_slice = (filePath, fileName, min, max) ->
   a = open(File(filePath))
 
   x1 = min[0] - max[0]
@@ -78,6 +78,9 @@ generate_slice = (filePath, min, max) ->
   a.saveAs(File(filePath), pngOptions, true)
   a.close(SaveOptions.DONOTSAVECHANGES)
 
+  # L,R,T,B
+  save_text(fileName, x1 + ',' + (w-x2) + ',' + y1 + ',' + (h-y2))
+
 createLayerParts = (doc, originalLayer, x1, y1, x2, y2, dx, dy) ->
   newLayer = originalLayer.duplicate()
   doc.activeLayer = newLayer
@@ -94,15 +97,27 @@ createLayerParts = (doc, originalLayer, x1, y1, x2, y2, dx, dy) ->
 
   newLayer.translate(dx, dy)
 
-save = (fileName) ->
+save_text = (fileName, text) ->
+  outputFolderPath = originalFilePath + "/" + originalFileName[..-5]
+  filepath = outputFolderPath + "/" + fileName + ".oden"
+
+  txtFile = new File(filepath)
+  txtFile.open("w", "TEXT")
+  txtFile.write(text)
+  txtFile.close()
+
+  filepath
+
+save_image = (fileName, document) ->
   outputFolderPath = originalFilePath + "/" + originalFileName[..-5]
   filepath = outputFolderPath + "/" + fileName + ".png"
 
   outputFolder = new Folder(outputFolderPath)
-  outputFolder.create() unless outputFolder.exists
+  outputFolder.remove() if outputFolder.exists
+  outputFolder.create()
 
   pngOptions = new PNGSaveOptions()
-  app.activeDocument.saveAs(File( filepath ), pngOptions, true)
+  document.saveAs(File( filepath ), pngOptions, true)
 
   filepath
 
