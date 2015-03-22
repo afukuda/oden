@@ -1,8 +1,9 @@
 String::startsWith ?= (s) -> @[...s.length] is s
 String::endsWith   ?= (s) -> s is '' or @[-s.length..] is s
 
-originalFilePath = ''
-originalFileName = ''
+if app.documents.length == 0
+  alert('対象のpsdを開いてから実行してください。')
+  return
 
 setup = ->
   originalFilePath = app.activeDocument.path
@@ -27,7 +28,12 @@ run = (layerSet) ->
 
   fileName = layerSet.name[1..]
   maxLayer = layerSet
-  minLayer = layerSet.artLayers.getByName "#Min"
+  minLayer = null
+  for layer in layerSet.artLayers
+    minLayer = layer if layer.name == "#Min"
+  if minLayer == null
+    alert(layerSet.name + '内に#Minレイヤーがありません。')
+    return
   clipping_image(fileName, minLayer.bounds, maxLayer.bounds)
 
   restoreSystemLayer layerSet, original_active
