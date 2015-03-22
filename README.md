@@ -5,6 +5,7 @@
 ## 準備
 
 * oden.jsを'/Applications/Adobe Photoshop CC 2014/Presets/Scripts/'以下にいれる
+(Windowは、C:\Program Files\Adobe\Adobe Photoshop CC (64 Bit)\Plug-ins)
 * OdenImporter.csを、UnityプロジェクトのEditor以下にいれる
 
 ## 使い方
