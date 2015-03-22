@@ -62,8 +62,8 @@ generate_slice = (filePath, fileName, min, max) ->
   w = max[2] - max[0]
   h = max[3] - max[1]
 
-  center_px = 2
-  # 4pxはCenter分
+  # Center分にpixelを余分にとる
+  center_px = 1
   dx = x1 - x2 + (center_px * 2)
   dy = y1 - y2 + (center_px * 2)
   originalLayer = a.activeLayer
