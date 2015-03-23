@@ -5,6 +5,9 @@ if app.documents.length == 0
   alert('対象のpsdを開いてから実行してください。')
   return
 
+originalFilePath = ''
+originalFileName = ''
+
 setup = ->
   originalFilePath = app.activeDocument.path
   originalFileName = app.activeDocument.name
